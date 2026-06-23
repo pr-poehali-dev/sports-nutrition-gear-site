@@ -10,20 +10,20 @@ const IMG = {
   gear: 'https://cdn.poehali.dev/projects/8de48591-a427-41a5-8897-cba27ae20a4f/files/cd44d9b3-8299-43f9-952c-a7b97a5a1073.jpg',
 };
 
-type Product = { name: string; cat: 'Питание' | 'Снаряжение'; sub: string; price: number; old?: number; rating: number; reviews: number; tag?: string; img: string };
+type Product = { id: string; name: string; cat: 'Питание' | 'Снаряжение'; sub: string; price: number; old?: number; rating: number; reviews: number; tag?: string; img: string };
 
 const PRODUCTS: Product[] = [
-  { name: 'Whey Protein PRO', cat: 'Питание', sub: 'Протеины', price: 2490, old: 3200, rating: 4.9, reviews: 312, tag: 'ХИТ', img: IMG.nutrition },
-  { name: 'Creatine Boost', cat: 'Питание', sub: 'Креатин', price: 1290, old: 1690, rating: 5.0, reviews: 421, tag: '-25%', img: IMG.nutrition },
-  { name: 'Mass Gainer 3000', cat: 'Питание', sub: 'Гейнеры', price: 3490, rating: 4.7, reviews: 158, img: IMG.nutrition },
-  { name: 'BCAA Energy', cat: 'Питание', sub: 'Аминокислоты', price: 1890, old: 2200, rating: 4.8, reviews: 203, tag: 'NEW', img: IMG.nutrition },
-  { name: 'Vitamin Complex', cat: 'Питание', sub: 'Витамины', price: 990, rating: 4.6, reviews: 87, img: IMG.nutrition },
-  { name: 'Pre-Workout Fire', cat: 'Питание', sub: 'Предтреники', price: 1690, rating: 4.9, reviews: 276, tag: 'ХИТ', img: IMG.nutrition },
-  { name: 'Power Set 20кг', cat: 'Снаряжение', sub: 'Гантели', price: 5990, rating: 4.8, reviews: 184, tag: 'NEW', img: IMG.gear },
-  { name: 'Resistance Bands X', cat: 'Снаряжение', sub: 'Эспандеры', price: 990, rating: 4.7, reviews: 96, img: IMG.gear },
-  { name: 'Yoga Mat PRO', cat: 'Снаряжение', sub: 'Коврики', price: 1490, old: 1990, rating: 4.5, reviews: 64, tag: '-25%', img: IMG.gear },
-  { name: 'Lifting Belt', cat: 'Снаряжение', sub: 'Экипировка', price: 2290, rating: 4.9, reviews: 112, img: IMG.gear },
-  { name: 'Kettlebell 16кг', cat: 'Снаряжение', sub: 'Гири', price: 3290, rating: 4.8, reviews: 145, img: IMG.gear },
+  { id: 'whey-protein-pro', name: 'Whey Protein PRO', cat: 'Питание', sub: 'Протеины', price: 2490, old: 3200, rating: 4.9, reviews: 312, tag: 'ХИТ', img: IMG.nutrition },
+  { id: 'creatine-boost', name: 'Creatine Boost', cat: 'Питание', sub: 'Креатин', price: 1290, old: 1690, rating: 5.0, reviews: 421, tag: '-25%', img: IMG.nutrition },
+  { id: 'mass-gainer-3000', name: 'Mass Gainer 3000', cat: 'Питание', sub: 'Гейнеры', price: 3490, rating: 4.7, reviews: 158, img: IMG.nutrition },
+  { id: 'bcaa-energy', name: 'BCAA Energy', cat: 'Питание', sub: 'Аминокислоты', price: 1890, old: 2200, rating: 4.8, reviews: 203, tag: 'NEW', img: IMG.nutrition },
+  { id: 'vitamin-complex', name: 'Vitamin Complex', cat: 'Питание', sub: 'Витамины', price: 990, rating: 4.6, reviews: 87, img: IMG.nutrition },
+  { id: 'pre-workout-fire', name: 'Pre-Workout Fire', cat: 'Питание', sub: 'Предтреники', price: 1690, rating: 4.9, reviews: 276, tag: 'ХИТ', img: IMG.nutrition },
+  { id: 'default', name: 'Power Set 20кг', cat: 'Снаряжение', sub: 'Гантели', price: 5990, rating: 4.8, reviews: 184, tag: 'NEW', img: IMG.gear },
+  { id: 'resistance-bands', name: 'Resistance Bands X', cat: 'Снаряжение', sub: 'Эспандеры', price: 990, rating: 4.7, reviews: 96, img: IMG.gear },
+  { id: 'yoga-mat-pro', name: 'Yoga Mat PRO', cat: 'Снаряжение', sub: 'Коврики', price: 1490, old: 1990, rating: 4.5, reviews: 64, tag: '-25%', img: IMG.gear },
+  { id: 'lifting-belt', name: 'Lifting Belt', cat: 'Снаряжение', sub: 'Экипировка', price: 2290, rating: 4.9, reviews: 112, img: IMG.gear },
+  { id: 'kettlebell-16', name: 'Kettlebell 16кг', cat: 'Снаряжение', sub: 'Гири', price: 3290, rating: 4.8, reviews: 145, img: IMG.gear },
   { name: 'Jump Rope Speed', cat: 'Снаряжение', sub: 'Кардио', price: 690, rating: 4.4, reviews: 53, img: IMG.gear },
 ];
 
@@ -171,10 +171,11 @@ export default function Catalog() {
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                 {filtered.map((p) => (
                   <div key={p.name} className="group bg-card border border-border rounded-2xl overflow-hidden hover:border-primary transition-all animate-float-up">
+                    <Link to={`/product/${p.id}`} className="block">
                     <div className="relative aspect-square overflow-hidden bg-secondary">
                       <img src={p.img} alt={p.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                       {p.tag && <span className="absolute top-3 left-3 bg-primary text-primary-foreground font-display font-bold text-xs uppercase px-3 py-1 rounded">{p.tag}</span>}
-                      <Button size="icon" variant="secondary" className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity"><Icon name="Heart" size={16} /></Button>
+                      <Button size="icon" variant="secondary" className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity" onClick={e => e.preventDefault()}><Icon name="Heart" size={16} /></Button>
                     </div>
                     <div className="p-5">
                       <span className="text-xs uppercase tracking-wide text-muted-foreground">{p.sub}</span>
@@ -188,9 +189,10 @@ export default function Catalog() {
                           <span className="font-display font-bold text-xl text-primary">{p.price.toLocaleString()} ₽</span>
                           {p.old && <span className="text-sm text-muted-foreground line-through">{p.old.toLocaleString()} ₽</span>}
                         </div>
-                        <Button size="icon" className="rounded-lg"><Icon name="Plus" size={18} /></Button>
+                        <Button size="icon" className="rounded-lg" onClick={e => e.preventDefault()}><Icon name="Plus" size={18} /></Button>
                       </div>
                     </div>
+                    </Link>
                   </div>
                 ))}
               </div>
