@@ -1,9 +1,11 @@
 import { useCart } from '@/context/CartContext';
+import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 
 export default function CartDrawer() {
   const { items, remove, update, clear, total, count, open, setOpen } = useCart();
+  const navigate = useNavigate();
 
   if (!open) return null;
 
@@ -136,7 +138,7 @@ export default function CartDrawer() {
               </div>
             </div>
 
-            <Button size="lg" className="w-full font-display uppercase tracking-wider h-13 text-base glow">
+            <Button size="lg" onClick={() => { setOpen(false); navigate('/checkout'); }} className="w-full font-display uppercase tracking-wider h-13 text-base glow">
               Оформить заказ<Icon name="ArrowRight" size={18} className="ml-2" />
             </Button>
           </div>
