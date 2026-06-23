@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 
@@ -53,7 +54,9 @@ export default function Index() {
           </a>
           <nav className="hidden lg:flex items-center gap-7">
             {NAV.map((item) => (
-              <a key={item} href="#" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wide">{item}</a>
+              item === 'Каталог' || item === 'Питание' || item === 'Снаряжение'
+                ? <Link key={item} to="/catalog" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wide">{item}</Link>
+                : <a key={item} href="#" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wide">{item}</a>
             ))}
           </nav>
           <div className="flex items-center gap-3">
@@ -93,8 +96,8 @@ export default function Index() {
               Спортивное питание и снаряжение для тех, кто не ищет оправданий. Только результат.
             </p>
             <div className="flex flex-wrap gap-4 animate-float-up" style={{ animationDelay: '0.3s' }}>
-              <Button size="lg" className="font-display uppercase tracking-wider text-base glow h-14 px-8">
-                В каталог<Icon name="ArrowRight" size={18} className="ml-2" />
+              <Button asChild size="lg" className="font-display uppercase tracking-wider text-base glow h-14 px-8">
+                <Link to="/catalog">В каталог<Icon name="ArrowRight" size={18} className="ml-2" /></Link>
               </Button>
               <Button size="lg" variant="outline" className="font-display uppercase tracking-wider text-base h-14 px-8 border-foreground/20">
                 Подобрать питание
@@ -153,7 +156,7 @@ export default function Index() {
             <span className="text-primary font-semibold uppercase tracking-widest text-sm">Каталог</span>
             <h2 className="font-display font-bold uppercase text-4xl sm:text-5xl mt-2">Хиты продаж</h2>
           </div>
-          <Button variant="outline" className="font-display uppercase border-foreground/20 hidden sm:flex">Все товары<Icon name="ArrowRight" size={16} className="ml-2" /></Button>
+          <Button asChild variant="outline" className="font-display uppercase border-foreground/20 hidden sm:flex"><Link to="/catalog">Все товары<Icon name="ArrowRight" size={16} className="ml-2" /></Link></Button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {PRODUCTS.map((p) => (
@@ -191,7 +194,7 @@ export default function Index() {
             <span className="text-accent font-bold uppercase tracking-widest text-sm">Снаряжение</span>
             <h2 className="font-display font-bold uppercase text-4xl lg:text-6xl mt-3 leading-tight">Экипируй себя как чемпион</h2>
             <p className="text-muted-foreground mt-4 mb-8">Гантели, эспандеры, коврики и аксессуары для дома и зала. Скидки до 40% на весь раздел.</p>
-            <Button size="lg" className="font-display uppercase tracking-wider glow h-14 px-8">Смотреть снаряжение<Icon name="ArrowRight" size={18} className="ml-2" /></Button>
+            <Button asChild size="lg" className="font-display uppercase tracking-wider glow h-14 px-8"><Link to="/catalog">Смотреть снаряжение<Icon name="ArrowRight" size={18} className="ml-2" /></Link></Button>
           </div>
         </div>
       </section>
