@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
+import { useCart } from '@/context/CartContext';
 
 const NAV = ['Главная', 'Каталог', 'Питание', 'Снаряжение', 'О нас', 'Блог', 'Контакты'];
 
@@ -43,6 +44,7 @@ const Stars = ({ rating }: { rating: number }) => (
 
 export default function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { count, setOpen: openCart } = useCart();
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -61,9 +63,9 @@ export default function Index() {
           </nav>
           <div className="flex items-center gap-3">
             <Button size="icon" variant="ghost" className="hidden sm:flex"><Icon name="Search" size={20} /></Button>
-            <Button size="icon" variant="ghost" className="relative">
+            <Button size="icon" variant="ghost" className="relative" onClick={() => openCart(true)}>
               <Icon name="ShoppingCart" size={20} />
-              <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">3</span>
+              {count > 0 && <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{count}</span>}
             </Button>
             <Button size="icon" variant="ghost" className="lg:hidden" onClick={() => setMenuOpen(!menuOpen)}>
               <Icon name={menuOpen ? 'X' : 'Menu'} size={22} />

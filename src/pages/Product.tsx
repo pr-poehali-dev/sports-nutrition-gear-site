@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useCart } from '@/context/CartContext';
 
 const IMG = {
   n1: 'https://cdn.poehali.dev/projects/8de48591-a427-41a5-8897-cba27ae20a4f/files/35b0c81e-52cb-403b-aeae-8e3db71889d4.jpg',
@@ -89,6 +90,16 @@ export default function Product() {
   const [selectedWeight, setSelectedWeight] = useState(product.weights?.[0] ?? '');
   const [qty, setQty] = useState(1);
   const [liked, setLiked] = useState(false);
+  const [added, setAdded] = useState(false);
+  const { add, count, setOpen: openCart } = useCart();
+
+  const handleAdd = () => {
+    for (let i = 0; i < qty; i++) {
+      add({ id: product.id, name: product.name, sub: product.sub, price: product.price, img: product.images[0], flavor: selectedFlavor || undefined, weight: selectedWeight || undefined });
+    }
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  };
 
   const ratingDist = [
     { label: '5', value: Math.round(product.reviews * 0.72) },
@@ -113,9 +124,9 @@ export default function Product() {
             <Icon name="ChevronRight" size={14} />
             <span className="text-foreground truncate max-w-[140px] sm:max-w-xs">{product.name}</span>
           </div>
-          <Button size="icon" variant="ghost" className="relative">
+          <Button size="icon" variant="ghost" className="relative" onClick={() => openCart(true)}>
             <Icon name="ShoppingCart" size={20} />
-            <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">3</span>
+            {count > 0 && <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{count}</span>}
           </Button>
         </div>
       </header>
@@ -205,8 +216,9 @@ export default function Product() {
                 <span className="w-12 text-center font-display font-bold text-lg">{qty}</span>
                 <button onClick={() => setQty(qty + 1)} className="w-12 h-12 flex items-center justify-center hover:bg-secondary transition-colors text-lg font-bold">+</button>
               </div>
-              <Button size="lg" className="flex-1 font-display uppercase tracking-wider h-12 glow text-base">
-                <Icon name="ShoppingCart" size={18} className="mr-2" />В корзину
+              <Button size="lg" onClick={handleAdd} className={`flex-1 font-display uppercase tracking-wider h-12 glow text-base transition-all ${added ? 'bg-green-500 hover:bg-green-500' : ''}`}>
+                <Icon name={added ? 'Check' : 'ShoppingCart'} size={18} className="mr-2" />
+                {added ? 'Добавлено!' : 'В корзину'}
               </Button>
               <Button size="lg" variant="outline" className="h-12 px-4 border-foreground/20">
                 <Icon name="Bookmark" size={18} />

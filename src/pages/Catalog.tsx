@@ -4,6 +4,7 @@ import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useCart } from '@/context/CartContext';
 
 const IMG = {
   nutrition: 'https://cdn.poehali.dev/projects/8de48591-a427-41a5-8897-cba27ae20a4f/files/35b0c81e-52cb-403b-aeae-8e3db71889d4.jpg',
@@ -45,6 +46,7 @@ export default function Catalog() {
   const [price, setPrice] = useState<number[]>([0, MAX_PRICE]);
   const [sort, setSort] = useState<'pop' | 'cheap' | 'exp' | 'rating'>('pop');
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const { add, count, setOpen: openCart } = useCart();
 
   const toggle = (arr: string[], set: (v: string[]) => void, v: string) =>
     set(arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v]);
@@ -120,9 +122,9 @@ export default function Catalog() {
           <Link to="/" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wide flex items-center gap-2">
             <Icon name="ArrowLeft" size={16} />На главную
           </Link>
-          <Button size="icon" variant="ghost" className="relative">
+          <Button size="icon" variant="ghost" className="relative" onClick={() => openCart(true)}>
             <Icon name="ShoppingCart" size={20} />
-            <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">3</span>
+            {count > 0 && <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{count}</span>}
           </Button>
         </div>
       </header>
@@ -189,7 +191,7 @@ export default function Catalog() {
                           <span className="font-display font-bold text-xl text-primary">{p.price.toLocaleString()} ₽</span>
                           {p.old && <span className="text-sm text-muted-foreground line-through">{p.old.toLocaleString()} ₽</span>}
                         </div>
-                        <Button size="icon" className="rounded-lg" onClick={e => e.preventDefault()}><Icon name="Plus" size={18} /></Button>
+                        <Button size="icon" className="rounded-lg" onClick={e => { e.preventDefault(); add({ id: p.id, name: p.name, sub: p.sub, price: p.price, img: p.img }); }}><Icon name="Plus" size={18} /></Button>
                       </div>
                     </div>
                     </Link>
